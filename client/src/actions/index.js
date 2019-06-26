@@ -1,16 +1,20 @@
 import { FETCH_USER } from './types';
 import axios from 'axios';
 
+
+//FETCH USER - CALLED IN APP COMPONENT TO GET CURRENT USER ACROSS APP
 export const fetchUser = () => async dispatch => {
   const response = await axios.get('api/current_user');
-  console.log(response)
+  console.log(response);
   dispatch({
     type: FETCH_USER,
     payload: response.data
   });
 };
 
-export const submitSelector = (formInput, auth) => {
+//SUBMITSELECTOR - SHOULD BE SPLIT INTO TWO ACTIONS, fetchStop which dispatches FETCH_STOP AND fetchBalance which dispatches FETCH_BALANCE
+//CALLED IN HOME COMPONENT FROM THE REDUX-FORM FOUND THERE (SELECTOR)
+export const submitSelector = (formInput, auth) => async dispatch => {
   const cleanInput = formInput => {
     if (String(formInput).indexOf('-') > 0) {
       return formInput.replace(/-/g, '');
@@ -19,43 +23,27 @@ export const submitSelector = (formInput, auth) => {
 
   if (cleanInput(formInput).length < 6 && cleanInput(formInput).length) {
     //It's a stopid, fetch the buses for that stop and its location
-    return async dispatch => {
-      const response = await axios.get(
-        `api/stopId?stop=${cleanInput(formInput)}`
-      );
-      dispatch(
-        manualDispatch('ADD_STOP', {
-          id: cleanInput(formInput),
-          location: response.data.location
-        })
-      );
-    };
+    const response = await axios.get(
+      `api/stopId?stop=${cleanInput(formInput)}`
+    );
+    dispatch({
+      type: 'ADD_STOP',
+      payload: { location: response.data.location, id: cleanInput(formInput) }
+    });
   } else if (cleanInput(formInput).length > 5) {
     // It's a serial number, fetch the balance of the go-to card
-    return async dispatch => {
-      axios.put(`/user/${auth.id}`, { serial: cleanInput(formInput) });
-      const response = await axios.get(
-        `api/card?serial=${cleanInput(formInput)}`
-      );
-      dispatch(manualDispatch('FETCH_BALANCE', response.data.amount));
-    };
+    const response = await axios.get(
+      `api/card?serial=${cleanInput(formInput)}`
+    );
+    dispatch({ type: 'FETCH_BALANCE', payload: response.data.amount });
   }
 };
 
-export const fetchBuses = id => {
-  return async dispatch => {
-    const response = await fetch(
-      `https://svc.metrotransit.org/NexTrip/${id}?format=json`
-    );
-    const data = await response.json();
+export const fetchBuses = id => async dispatch => {
+  const response = await fetch(
+    `https://svc.metrotransit.org/NexTrip/${id}?format=json`
+  );
+  const data = await response.json();
 
-    dispatch(manualDispatch('UPDATE_BUSES', { data: data, id: id }));
-  };
-};
-
-export const manualDispatch = (type, payload) => {
-  return {
-    type: type,
-    payload: payload
-  };
+  dispatch({ type: 'UPDATE_BUSES', payload: { data: data, id: id } });
 };
