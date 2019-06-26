@@ -1,4 +1,3 @@
-import backend from '../api/backend';
 import { FETCH_USER } from './types';
 import axios from 'axios';
 
@@ -21,7 +20,7 @@ export const submitSelector = (formInput, auth) => {
   if (cleanInput(formInput).length < 6 && cleanInput(formInput).length) {
     //It's a stopid, fetch the buses for that stop and its location
     return async dispatch => {
-      const response = await backend.get(
+      const response = await axios.get(
         `api/stopId?stop=${cleanInput(formInput)}`
       );
       dispatch(
@@ -34,8 +33,8 @@ export const submitSelector = (formInput, auth) => {
   } else if (cleanInput(formInput).length > 5) {
     // It's a serial number, fetch the balance of the go-to card
     return async dispatch => {
-      backend.put(`/user/${auth.id}`, { serial: cleanInput(formInput) });
-      const response = await backend.get(
+      axios.put(`/user/${auth.id}`, { serial: cleanInput(formInput) });
+      const response = await axios.get(
         `api/card?serial=${cleanInput(formInput)}`
       );
       dispatch(manualDispatch('FETCH_BALANCE', response.data.amount));
