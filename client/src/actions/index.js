@@ -47,3 +47,9 @@ export const fetchBuses = id => async dispatch => {
 
   dispatch({ type: 'UPDATE_BUSES', payload: { data: data, id: id } });
 };
+
+
+export const removeCard = (id) => {
+  console.log(id);
+  return {type: 'DELETE_STOP', payload: id};
+}

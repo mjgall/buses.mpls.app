@@ -5,25 +5,23 @@ const express = require('express');
 const cors = require('cors');
 const cookieSession = require('cookie-session');
 const keys = require('./config/keys');
+
 require('./models/User');
 require('./services/passport');
+
 const app = express();
 
-
+//MIDDLEWARES
 app.use(cors());
-
 app.use(
   bodyParser.urlencoded({
     extended: false
   })
 );
-
 app.use(bodyParser.json());
-
 app.use(
   cookieSession({ maxAge: 30 * 24 * 60 * 60 * 1000, keys: [keys.cookieKey] })
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -34,9 +32,11 @@ mongoose
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
+//ROUTES
 require('./routes/authRoutes')(app);
 require('./routes/metrotransitRoutes')(app);
 
+//CONDITIONS IF DEPLOYED TO PRODUCTION
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
   // like our main.js file, or main.css file!

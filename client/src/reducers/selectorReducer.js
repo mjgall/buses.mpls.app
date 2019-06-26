@@ -31,6 +31,14 @@ export default (state = INTIAL_STATE, action) => {
           { id: action.payload.id, location: action.payload.location }
         ]
       };
+    case 'DELETE_STOP':
+      return {
+        ...state,
+        stops: [
+          ...state.stops.slice(0, action.payload),
+          ...state.stops.slice(action.payload + 1)
+      ],
+      }
     case 'UPDATE_BUSES':
       return {
         ...state,

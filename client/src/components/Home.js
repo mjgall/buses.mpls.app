@@ -39,6 +39,7 @@ class Home extends React.Component {
                   stopId={stop.id}
                   location={stop.location}
                   key={index}
+                  inArray={index}
                 />
               );
             })}
