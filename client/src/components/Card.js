@@ -30,7 +30,7 @@ class BusCard extends React.Component {
         <div className="content">
           <div className="header">
             {this.props.location}
-            <Icon name="window close outline" style={{float: "right"}} onClick={this.removeCard}/>
+            <Icon name="window close outline" style={{float: "right"}} onClick={this.removeCard} id="close-card"/>
           </div>
 
           <div className="meta">{this.props.stopId}</div>
