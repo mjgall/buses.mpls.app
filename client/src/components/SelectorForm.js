@@ -22,7 +22,7 @@ class SelectorForm extends React.Component {
 
   render() {
     return (
-      <Form onSubmit={this.props.handleSubmit(this.onSubmit)} style={{maxWidth: "50%", margin: "0 auto"}}>
+      <Form onSubmit={this.props.handleSubmit(this.onSubmit)} style={{ margin: "0px auto 1rem auto"}}>
         <Field name="input" component={this.renderInput} />
       </Form>
     );

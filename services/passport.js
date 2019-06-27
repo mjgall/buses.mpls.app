@@ -34,7 +34,21 @@ passport.use(
           first: profile._json.given_name,
           last: profile._json.family_name,
           full: profile._json.name,
-          picture: profile._json.picture
+          picture: profile._json.picture,
+          stops: [
+            {
+              id: '167',
+              location: 'Bryant Ave S - 32nd St W'
+            },
+            {
+              id: '42216',
+              location: 'Hennepin Ave - 33rd St W'
+            },
+            {
+              id: '17980',
+              location: 'Nicollet Mall - 7th St S'
+            }
+          ]
         });
         user.save();
         done(null, user);

@@ -5,7 +5,6 @@ import axios from 'axios';
 //FETCH USER - CALLED IN APP COMPONENT TO GET CURRENT USER ACROSS APP
 export const fetchUser = () => async dispatch => {
   const response = await axios.get('api/current_user');
-  console.log(response);
   dispatch({
     type: FETCH_USER,
     payload: response.data

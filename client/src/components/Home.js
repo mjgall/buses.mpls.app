@@ -27,7 +27,7 @@ class Home extends React.Component {
           />
           <Grid columns="equal">
             <Grid.Column />
-            <Grid.Column width={8}>
+            <Grid.Column width={12} style={{textAlign: "center"}}>
               <Quote />
             </Grid.Column>
             <Grid.Column />

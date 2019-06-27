@@ -8,8 +8,12 @@ import history from '../history';
 import * as actions from '../actions/index'
 
 class App extends React.Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchUser();
+  }
+
+  componentDidMount() {
+    console.log(this.props.state)
   }
 
   render() {
@@ -26,8 +30,10 @@ class App extends React.Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
+function mapStateToProps(state) {
+  return {
+    state
+   };
 }
 
 export default connect(

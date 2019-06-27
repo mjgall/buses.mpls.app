@@ -13,7 +13,6 @@ export default class Quote extends React.Component {
       'https://cors-anywhere.herokuapp.com/http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml'
     );
 
-
     let articleChoice = Math.floor(Math.random() * 10);
     let title = feed.items[articleChoice].title;
     let link = feed.items[articleChoice].link;
