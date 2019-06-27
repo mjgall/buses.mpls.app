@@ -7,12 +7,49 @@ import { Grid } from 'semantic-ui-react';
 import SelectorForm from './SelectorForm';
 import { connect } from 'react-redux';
 
-import { submitSelector } from '../actions';
+import * as actions from '../actions';
 
 class Home extends React.Component {
-  
   onSubmit = (formInput, auth) => {
     this.props.submitSelector(formInput.input, auth);
+  };
+
+  componentWillMount() {
+    this.props.fetchUser();
+  }
+
+  renderCards = () => {
+    if (!this.props.auth) {
+      return (
+        <div id="" className="ui centered cards">
+          {this.props.buses.map((stop, index) => {
+            return (
+              <BusCard
+                stopId={stop.id}
+                location={stop.location}
+                key={index}
+                inArray={index}
+              />
+            );
+          })}
+        </div>
+      );
+    } else if (this.props.auth) {
+      return (
+        <div id="" className="ui centered cards">
+          {this.props.auth.stops.map((stop, index) => {
+            return (
+              <BusCard
+                stopId={stop.id}
+                location={stop.location}
+                key={index}
+                inArray={index}
+              />
+            );
+          })}
+        </div>
+      );
+    }
   };
 
   render() {
@@ -27,23 +64,12 @@ class Home extends React.Component {
           />
           <Grid columns="equal">
             <Grid.Column />
-            <Grid.Column width={12} style={{textAlign: "center"}}>
+            <Grid.Column width={12} style={{ textAlign: 'center' }}>
               <Quote />
             </Grid.Column>
             <Grid.Column />
           </Grid>
-          <div id="" className="ui centered cards">
-            {this.props.buses.map((stop, index) => {
-              return (
-                <BusCard
-                  stopId={stop.id}
-                  location={stop.location}
-                  key={index}
-                  inArray={index}
-                />
-              );
-            })}
-          </div>
+          {this.renderCards()}
         </div>
       </div>
     );
@@ -56,5 +82,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { submitSelector }
+  actions
 )(Home);
