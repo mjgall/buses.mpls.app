@@ -1,7 +1,6 @@
 import { FETCH_USER } from './types';
 import axios from 'axios';
 
-
 //FETCH USER - CALLED IN APP COMPONENT TO GET CURRENT USER ACROSS APP
 export const fetchUser = () => async dispatch => {
   const response = await axios.get('api/current_user');
@@ -22,13 +21,21 @@ export const submitSelector = (formInput, auth) => async dispatch => {
 
   if (cleanInput(formInput).length < 6 && cleanInput(formInput).length) {
     //It's a stopid, fetch the buses for that stop and its location
+
     const response = await axios.get(
       `api/stopId?stop=${cleanInput(formInput)}`
     );
-    dispatch({
-      type: 'ADD_STOP',
-      payload: { location: response.data.location, id: cleanInput(formInput) }
-    });
+    if (!auth) {
+      dispatch({
+        type: 'ADD_STOP',
+        payload: { location: response.data.location, id: cleanInput(formInput) }
+      });
+    } else if (auth) {
+      dispatch({
+        type: 'ADD_USER_STOP',
+        payload: { location: response.data.location, id: cleanInput(formInput) }
+      });
+    }
   } else if (cleanInput(formInput).length > 5) {
     // It's a serial number, fetch the balance of the go-to card
     const response = await axios.get(
@@ -47,13 +54,12 @@ export const fetchBuses = id => async dispatch => {
   dispatch({ type: 'UPDATE_BUSES', payload: { data: data, id: id } });
 };
 
-
-export const removeCard = (id) => {
+export const removeCard = id => {
   console.log(id);
-  return {type: 'DELETE_DEFAULT_STOP', payload: id};
-}
+  return { type: 'DELETE_DEFAULT_STOP', payload: id };
+};
 
-export const removeUserCard = (id) => {
+export const removeUserCard = id => {
   console.log(id);
-  return {type: 'DELETE_USER_STOP', payload: id};
-}
+  return { type: 'DELETE_USER_STOP', payload: id };
+};

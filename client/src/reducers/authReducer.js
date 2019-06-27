@@ -12,6 +12,14 @@ export default function(state = null, action) {
           ...state.stops.slice(action.payload + 1)
         ]
       };
+    case 'ADD_USER_STOP':
+      return {
+        ...state,
+        stops: [
+          ...state.stops,
+          { id: action.payload.id, location: action.payload.location }
+        ]
+      };
     default:
       return state;
   }
