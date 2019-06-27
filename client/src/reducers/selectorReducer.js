@@ -31,7 +31,7 @@ export default (state = INTIAL_STATE, action) => {
           { id: action.payload.id, location: action.payload.location }
         ]
       };
-    case 'DELETE_STOP':
+    case 'DELETE_DEFAULT_STOP':
       return {
         ...state,
         stops: [

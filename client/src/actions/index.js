@@ -50,5 +50,10 @@ export const fetchBuses = id => async dispatch => {
 
 export const removeCard = (id) => {
   console.log(id);
-  return {type: 'DELETE_STOP', payload: id};
+  return {type: 'DELETE_DEFAULT_STOP', payload: id};
+}
+
+export const removeUserCard = (id) => {
+  console.log(id);
+  return {type: 'DELETE_USER_STOP', payload: id};
 }

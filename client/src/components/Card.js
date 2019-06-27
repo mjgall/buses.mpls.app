@@ -21,7 +21,11 @@ class BusCard extends React.Component {
   }
 
   removeCard = () => {
-    this.props.removeCard(this.props.inArray);
+    if (this.props.type === "default") {
+      this.props.removeCard(this.props.inArray);
+    } else if (this.props.type === "user") {
+      this.props.removeUserCard(this.props.inArray)
+    }
   }
 
   render() {

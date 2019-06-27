@@ -19,6 +19,7 @@ class Home extends React.Component {
   }
 
   renderCards = () => {
+
     if (!this.props.auth) {
       return (
         <div id="" className="ui centered cards">
@@ -29,6 +30,7 @@ class Home extends React.Component {
                 location={stop.location}
                 key={index}
                 inArray={index}
+                type="default"
               />
             );
           })}
@@ -44,6 +46,7 @@ class Home extends React.Component {
                 location={stop.location}
                 key={index}
                 inArray={index}
+                type="user"
               />
             );
           })}
