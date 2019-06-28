@@ -27,7 +27,7 @@ export const submitSelector = (formInput, auth) => async dispatch => {
     );
     if (!auth) {
       dispatch({
-        type: 'ADD_STOP',
+        type: 'ADD_DEFAULT_STOP',
         payload: { location: response.data.location, id: cleanInput(formInput) }
       });
     } else if (auth) {

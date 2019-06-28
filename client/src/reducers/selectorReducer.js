@@ -23,7 +23,7 @@ export default (state = INTIAL_STATE, action) => {
         ...state,
         balance: `$${action.payload}`
       };
-    case 'ADD_STOP':
+    case 'ADD_DEFAULT_STOP':
       return {
         ...state,
         stops: [
