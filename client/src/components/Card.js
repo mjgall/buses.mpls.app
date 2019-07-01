@@ -23,6 +23,7 @@ class BusCard extends React.Component {
       location: this.props.location
     });
     console.log(response.data);
+    this.removeCard();
   };
 
   fetchBuses = async id => {
@@ -33,10 +34,6 @@ class BusCard extends React.Component {
     this.setState({ buses: data.slice(0, 6) });
   };
 
-  async componentWillMount() {
-    this.fetchBuses(this.props.stopId);
-  }
-
   removeCard = () => {
     if (this.props.type === 'default') {
       this.props.removeCard(this.props.inArray);
@@ -45,10 +42,20 @@ class BusCard extends React.Component {
     }
   };
 
+  componentWillMount() {
+    this.fetchBuses(this.props.stopId);
+  }
+
   render() {
     return (
       <div className="card" data-key={this.props.inArray}>
         <div className="content">
+          <Icon
+            name="window close outline"
+            style={{ float: 'right', color: 'red' }}
+            onClick={this.removeCard}
+            id="close-card"
+          />
           <div className="header">{this.props.location}</div>
 
           <div className="meta">{this.props.stopId}</div>
@@ -63,12 +70,6 @@ class BusCard extends React.Component {
             </ul>
           </div>
           <div className="footer">
-            <Icon
-              name="window close outline"
-              style={{ float: 'right', color: 'red' }}
-              onClick={this.removeCard}
-              id="close-card"
-            />
             {this.props.auth ? (
               <div id="logged-in-actions">
                 <Popup
