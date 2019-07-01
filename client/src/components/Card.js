@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import * as actions from '../actions/index';
@@ -70,18 +70,32 @@ class BusCard extends React.Component {
               id="close-card"
             />
             {this.props.auth ? (
-              <div>
-                <Icon
-                  name="plus square outline"
-                  style={{ float: 'right', color: 'green' }}
-                  onClick={this.sendNewStop}
-                  id="save-stop"
+              <div id="logged-in-actions">
+                <Popup
+                  trigger={
+                    <Icon
+                      name="plus square outline"
+                      style={{ float: 'right', color: 'green' }}
+                      onClick={this.sendNewStop}
+                      id="save-stop"
+                    />
+                  }
+                  content="Save to user"
+                  size="mini"
+                  position="left center"
                 />
-                <Icon
-                  name="minus square outline"
-                  style={{ float: 'right', color: 'gold' }}
-                  onClick={this.removeStop}
-                  id="save-stop"  
+                <Popup
+                  trigger={
+                    <Icon
+                      name="minus square outline"
+                      style={{ float: 'right', color: 'gold' }}
+                      onClick={this.removeStop}
+                      id="save-stop"
+                    />
+                  }
+                  size="mini"
+                  content="Remove from user"
+                  position="left center"
                 />
               </div>
             ) : null}
