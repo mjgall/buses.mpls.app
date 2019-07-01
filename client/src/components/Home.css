@@ -4,7 +4,7 @@
 
 #avatar-image {
   border-radius: 50%;
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 
 #user-email {
@@ -18,4 +18,11 @@
 
 #close-card {
   cursor: pointer;
+}
+
+.footer {
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  right: 5px;
 }

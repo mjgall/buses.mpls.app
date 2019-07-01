@@ -1,11 +1,28 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
-import {connect} from 'react-redux';
-import * as actions from '../actions/index'
+import { connect } from 'react-redux';
+import axios from 'axios';
+import * as actions from '../actions/index';
 
 class BusCard extends React.Component {
   state = {
     buses: []
+  };
+
+  sendNewStop = async () => {
+    const response = await axios.put('/api/stops/add', {
+      stop: this.props.stopId,
+      location: this.props.location
+    });
+    console.log(response.data);
+  };
+
+  removeStop = async () => {
+    const response = await axios.put('/api/stops/remove', {
+      stop: this.props.stopId,
+      location: this.props.location
+    });
+    console.log(response.data);
   };
 
   fetchBuses = async id => {
@@ -21,21 +38,18 @@ class BusCard extends React.Component {
   }
 
   removeCard = () => {
-    if (this.props.type === "default") {
+    if (this.props.type === 'default') {
       this.props.removeCard(this.props.inArray);
-    } else if (this.props.type === "user") {
-      this.props.removeUserCard(this.props.inArray)
+    } else if (this.props.type === 'user') {
+      this.props.removeUserCard(this.props.inArray);
     }
-  }
+  };
 
   render() {
     return (
       <div className="card" data-key={this.props.inArray}>
         <div className="content">
-          <div className="header">
-            {this.props.location}
-            <Icon name="window close outline" style={{float: "right"}} onClick={this.removeCard} id="close-card"/>
-          </div>
+          <div className="header">{this.props.location}</div>
 
           <div className="meta">{this.props.stopId}</div>
           <div className="description">
@@ -48,10 +62,41 @@ class BusCard extends React.Component {
               ))}
             </ul>
           </div>
+          <div className="footer">
+            <Icon
+              name="window close outline"
+              style={{ float: 'right', color: 'red' }}
+              onClick={this.removeCard}
+              id="close-card"
+            />
+            {this.props.auth ? (
+              <div>
+                <Icon
+                  name="plus square outline"
+                  style={{ float: 'right', color: 'green' }}
+                  onClick={this.sendNewStop}
+                  id="save-stop"
+                />
+                <Icon
+                  name="minus square outline"
+                  style={{ float: 'right', color: 'gold' }}
+                  onClick={this.removeStop}
+                  id="save-stop"  
+                />
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default connect(null, actions)(BusCard);
+const mapStateToProps = state => {
+  return { auth: state.auth };
+};
+
+export default connect(
+  mapStateToProps,
+  actions
+)(BusCard);

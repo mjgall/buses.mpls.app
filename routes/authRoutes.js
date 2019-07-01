@@ -1,4 +1,6 @@
 const passport = require('passport');
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
 
 module.exports = app => {
   app.get(
@@ -23,5 +25,37 @@ module.exports = app => {
 
   app.get('/api/current_user', (req, res) => {
     res.send(req.user);
+  });
+
+  app.put('/api/stops/add', (req, res) => {
+    User.findOneAndUpdate(
+      { googleId: req.user.googleId },
+      { $push: { stops: { id: req.body.stop, location: req.body.location } } },
+      { new: true },
+      (err, doc) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send('Something went wrong');
+        } else if (doc) {
+          res.send(doc);
+        }
+      }
+    );
+  });
+
+  app.put('/api/stops/remove', (req, res) => {
+    User.findOneAndUpdate(
+      { googleId: req.user.googleId },
+      { $pullAll: { stops:  [{id: req.body.stop, location: req.body.location}] } },
+      { new: true },
+      (err, doc) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send('Something went wrong');
+        } else if (doc) {
+          res.send(doc);
+        }
+      }
+    );
   });
 };
