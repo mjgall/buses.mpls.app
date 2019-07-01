@@ -20,9 +20,9 @@
   cursor: pointer;
 }
 
-/* .footer {
+.footer {
   position: absolute;
-  bottom: 8px;
+  bottom: 1em;
   width: 100%;
-  right: 5px;
-} */
+  right: 1em;
+}
