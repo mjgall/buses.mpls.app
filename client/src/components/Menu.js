@@ -20,7 +20,7 @@ class Menu extends React.Component {
         return (
           <React.Fragment>
             <div className="item">
-              <a href="#">{this.props.auth.email}</a>
+              <div>{this.props.auth.email}</div>
             </div>
             <a href="/api/logout" className="item">
               <div className="header">Log Out</div>

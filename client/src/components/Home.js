@@ -19,7 +19,6 @@ class Home extends React.Component {
   }
 
   renderCards = () => {
-
     if (!this.props.auth) {
       return (
         <div id="" className="ui centered cards">

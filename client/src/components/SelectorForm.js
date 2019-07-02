@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Form, Input, Button } from 'semantic-ui-react';
+import { Form, Input } from 'semantic-ui-react';
 
 class SelectorForm extends React.Component {
 
