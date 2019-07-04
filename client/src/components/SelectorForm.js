@@ -3,8 +3,6 @@ import { Field, reduxForm } from 'redux-form';
 import { Form, Input } from 'semantic-ui-react';
 
 class SelectorForm extends React.Component {
-
-
   renderInput = ({ input, label, meta }) => {
     return (
       <div className="field">
@@ -24,9 +22,7 @@ class SelectorForm extends React.Component {
 
   render() {
     return (
-      <Form
-        onSubmit={this.props.handleSubmit(this.onSubmit)}
-        style={{ margin: '0px auto 1rem auto' }}>
+      <Form onSubmit={this.props.handleSubmit(this.onSubmit)}>
         <Field name="input" component={this.renderInput} />
       </Form>
     );

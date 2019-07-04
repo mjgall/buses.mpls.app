@@ -61,10 +61,11 @@ class Home extends React.Component {
     return (
       <div>
         <div className="ui vertical segment">
-          <SelectorForm
+        <SelectorForm
             onSubmit={values => this.onSubmit(values, this.props.auth)}
           />
           <Grid columns="equal">
+            
             <Grid.Column />
             <Grid.Column width={12} style={{ textAlign: 'center' }}>
               <Quote />

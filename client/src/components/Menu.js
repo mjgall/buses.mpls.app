@@ -3,8 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { submitSelector } from '../actions';
-
 class Menu extends React.Component {
   renderAuthItems() {
     switch (this.props.auth) {
@@ -38,11 +36,7 @@ class Menu extends React.Component {
             <div className="header">MPLS Buses</div>
           </Link>
           {this.renderAuthItems()}
-          {this.props.balance && (
-            <div className="item" id="balance-area">
-              {this.props.balance}
-            </div>
-          )}
+          
           <div className="right menu">
             <div />
           </div>
@@ -62,5 +56,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { submitSelector }
+  null
 )(Menu);
