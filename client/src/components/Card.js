@@ -6,8 +6,11 @@ import * as actions from '../actions/index';
 
 class BusCard extends React.Component {
   state = {
-    buses: []
+    buses: [],
+    isLoading: true
   };
+
+  _isMounted = false;
 
 
   sendNewStop = async () => {
@@ -31,7 +34,10 @@ class BusCard extends React.Component {
       `https://svc.metrotransit.org/NexTrip/${id}?format=json`
     );
     const data = await response.json();
-    this.setState({ buses: data.slice(0, 6) });
+    if (this._isMounted) {
+      this.setState({ isLoading: false, buses: data.slice(0, 6) });
+    }
+    
   };
 
   removeCard = () => {
@@ -42,8 +48,13 @@ class BusCard extends React.Component {
     }
   };
 
-  componentWillMount() {
+  componentDidMount() {
+    this._isMounted = true;
     this.fetchBuses(this.props.stopId);
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
