@@ -35,10 +35,9 @@ class SelectorForm extends React.Component {
     });
   };
 
+
   render() {
     if (this.props.auth && this.props.auth.serial) {
-      this.props.fetchBalance(this.props.auth.serial);
-
       return (
         <Grid>
           <Grid.Column width={12}>

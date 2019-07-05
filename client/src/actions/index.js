@@ -8,6 +8,7 @@ export const fetchUser = () => async dispatch => {
     type: FETCH_USER,
     payload: response.data
   });
+  return response.data;
 };
 
 //SUBMITSELECTOR - SHOULD BE SPLIT INTO TWO ACTIONS, fetchStop which dispatches FETCH_STOP AND fetchBalance which dispatches FETCH_BALANCE
