@@ -13,7 +13,8 @@ const INTIAL_STATE = {
       id: '17980',
       location: 'Nicollet Mall - 7th St S'
     }
-  ]
+  ],
+  serial: ''
 };
 
 export default (state = INTIAL_STATE, action) => {
@@ -47,6 +48,11 @@ export default (state = INTIAL_STATE, action) => {
           { id: action.payload.id, data: action.payload.data }
         ]
       };
+    case 'SET_SERIAL':
+      return {
+      ...state,
+      serial: action.payload
+    }
     default:
       return state;
   }

@@ -35,11 +35,10 @@ class Menu extends React.Component {
           <Link to="/" className="item">
             <div className="header">MPLS Buses</div>
           </Link>
-          {this.renderAuthItems()}
-          
-          <div className="right menu">
-            <div />
+          <div className="menu right">
+{this.renderAuthItems()}
           </div>
+          
         </div>
       </div>
     );

@@ -58,4 +58,19 @@ module.exports = app => {
       }
     );
   });
+  app.post('/api/serial', (req, res) => {
+    console.log(req.body.serial);
+    User.findOneAndUpdate(
+      { googleId: req.user.googleId },
+      { serial: req.body.serial },
+      (err, doc) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send('Something went wrong');
+        } else if (doc) {
+          res.send(doc);
+        }
+      }
+    );
+  });
 };

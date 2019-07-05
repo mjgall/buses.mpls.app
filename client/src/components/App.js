@@ -8,6 +8,12 @@ import history from '../history';
 import * as actions from '../actions/index'
 
 class App extends React.Component {
+
+
+  componentWillMount() {
+    this.props.fetchUser();
+  }
+
   render() {
     return (
       <div className="ui main container">

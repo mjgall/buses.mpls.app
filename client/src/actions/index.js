@@ -19,10 +19,11 @@ export const submitSelector = (formInput, auth) => async dispatch => {
     } else return formInput;
   };
 
-  if (cleanInput(formInput).length< 6 && cleanInput(formInput).length) {
+  if (cleanInput(formInput).length < 6 && cleanInput(formInput).length) {
     //It's a stopid, fetch the buses for that stop and its location
 
-    const response = await axios.get( `api/stopId?stop=${cleanInput(formInput)}`
+    const response = await axios.get(
+      `api/stopId?stop=${cleanInput(formInput)}`
     );
     if (!auth) {
       dispatch({
@@ -37,14 +38,23 @@ export const submitSelector = (formInput, auth) => async dispatch => {
     }
   } else if (cleanInput(formInput).length > 5) {
     // It's a serial number, fetch the balance of the go-to card
-    const response = await axios.get( `api/card?serial=${cleanInput(formInput)}`
+    const response = await axios.get(
+      `api/card?serial=${cleanInput(formInput)}`
     );
     dispatch({ type: 'FETCH_BALANCE', payload: response.data.amount });
   }
 };
 
+export const fetchBalance = (serial) => async dispatch => {
+  const response = await axios.get(
+    `api/card?serial=${serial}`
+  );
+  dispatch({ type: 'FETCH_BALANCE', payload: response.data.amount });
+}
+ 
 export const fetchBuses = id => async dispatch => {
-  const response = await fetch( `https://svc.metrotransit.org/NexTrip/${id}?format=json`
+  const response = await fetch(
+    `https://svc.metrotransit.org/NexTrip/${id}?format=json`
   );
   const data = await response.json();
 
@@ -52,19 +62,27 @@ export const fetchBuses = id => async dispatch => {
 };
 
 export const removeCard = id => {
-  console.log(id);
+
   return { type: 'DELETE_DEFAULT_STOP', payload: id };
 };
 
 export const removeUserCard = id => {
-  console.log(id);
+
   return { type: 'DELETE_USER_STOP', payload: id };
 };
 
+export const saveSerial = serial => {
+
+  return {
+    type: 'SET_SERIAL',
+    payload: serial
+  };
+};
+
 export const saveStop = id => {
-  console.log(id);
+
   return {
     type: 'SAVE_STOP',
     payload: id
-  }
-}
+  };
+};

@@ -9,20 +9,20 @@ class BusCard extends React.Component {
     buses: []
   };
 
+
   sendNewStop = async () => {
-    const response = await axios.put('/api/stops/add', {
+    await axios.put('/api/stops/add', {
       stop: this.props.stopId,
       location: this.props.location
     });
-    console.log(response.data);
   };
 
   removeStop = async () => {
-    const response = await axios.put('/api/stops/remove', {
+    await axios.put('/api/stops/remove', {
       stop: this.props.stopId,
       location: this.props.location
     });
-    console.log(response.data);
+
     this.removeCard();
   };
 

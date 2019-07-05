@@ -54,7 +54,7 @@ passport.use(
         done(null, user);
       } else {
         //Already a user, don't do anything
-        console.log('Already a user');
+
         done(null, existingUser);
       }
     }
