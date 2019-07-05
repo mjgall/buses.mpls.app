@@ -12,7 +12,6 @@ class App extends React.Component {
 
   componentWillMount() {
     this.props.fetchUser().then((user)=> {
-      console.log(user);
       if (user) {
         this.props.fetchBalance(user.serial)
       }
