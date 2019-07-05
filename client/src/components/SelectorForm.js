@@ -9,6 +9,9 @@ import axios from 'axios';
 //0160000209344452
 
 class SelectorForm extends React.Component {
+  state = {
+    isLoading: true
+  };
   renderInput = ({ input, label, meta }) => {
     return (
       <div className="field">
@@ -16,7 +19,7 @@ class SelectorForm extends React.Component {
           {...input}
           autoComplete="off"
           action="Submit"
-          placeholder="Serial for balance or stop number"
+          placeholder="Serial or stop number"
         />
       </div>
     );
@@ -35,6 +38,9 @@ class SelectorForm extends React.Component {
     });
   };
 
+  componentDidMount() {
+    this.setState({ isLoading: false });
+  }
 
   render() {
     if (this.props.auth && this.props.auth.serial) {
@@ -45,7 +51,9 @@ class SelectorForm extends React.Component {
               <Field name="input" component={this.renderInput} />
             </Form>
           </Grid.Column>
-          <Grid.Column style={{ lineHeight: '2.5rem', fontSize: '2rem' }}>
+          <Grid.Column
+            width={4}
+            style={{ lineHeight: '2.5rem', fontSize: '2rem' }}>
             {this.props.balance}
           </Grid.Column>
         </Grid>
@@ -62,6 +70,7 @@ class SelectorForm extends React.Component {
             content="Click to save"
             trigger={
               <Grid.Column
+                width={4}
                 onClick={this.saveSerialUser}
                 style={{
                   lineHeight: '2.5rem',
@@ -89,8 +98,8 @@ class SelectorForm extends React.Component {
       );
     } else {
       return (
-        <Grid>
-          <Grid.Column width={16}>
+        <Grid centered>
+          <Grid.Column>
             <Form onSubmit={this.props.handleSubmit(this.onSubmit)}>
               <Field name="input" component={this.renderInput} />
             </Form>

@@ -9,14 +9,12 @@ import * as actions from '../actions/index'
 
 class App extends React.Component {
 
-
   componentWillMount() {
     this.props.fetchUser().then((user)=> {
-      if (user) {
+      if (user && user.serial) {
         this.props.fetchBalance(user.serial)
       }
     });
-
   }
 
   render() {
