@@ -5,14 +5,14 @@ import { connect } from 'react-redux';
 import Home from './Home';
 import Menu from './Menu';
 import history from '../history';
-import * as actions from '../actions/index'
+import * as actions from '../actions/index';
+import Settings from './Settings';
 
 class App extends React.Component {
-
   componentWillMount() {
-    this.props.fetchUser().then((user)=> {
+    this.props.fetchUser().then(user => {
       if (user && user.serial) {
-        this.props.fetchBalance(user.serial)
+        this.props.fetchBalance(user.serial);
       }
     });
   }
@@ -24,6 +24,7 @@ class App extends React.Component {
           <Menu />
           <Switch>
             <Route component={Home} path="/" exact />
+            <Route component={Settings} path="/settings" exact />
           </Switch>
         </Router>
       </div>
@@ -34,9 +35,10 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     state
-   };
+  };
 }
 
 export default connect(
-  mapStateToProps, actions
+  mapStateToProps,
+  actions
 )(App);
