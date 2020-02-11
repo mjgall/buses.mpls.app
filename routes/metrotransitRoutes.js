@@ -13,13 +13,13 @@ module.exports = app => {
         const html = axiosResponse.data;
         const $ = cheerio.load(html);
         const value = $(
-          '#main_content_content_elAllContent > div.mt-fare-card-summary > div > div:nth-child(2) > div:nth-child(2) > span.mt-value'
+          '#shoppingCart > div.card-body > div.mt-fare-card-summary > div > strong:nth-child(5)'
         );
-        return value.text();
+        return value.nextSibling.textContent.replace('$', '').text();
       };
 
       const balanceString = await getHTML(url);
-      const balanceNumber = parseFloat(balanceString.substring(1)).toFixed(2);
+      const balanceNumber = parseFloat(balanceString).toFixed(2);
 
       if (balanceNumber === NaN) {
         res.send({ amount: 'No results' });
