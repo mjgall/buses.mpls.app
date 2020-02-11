@@ -15,7 +15,7 @@ module.exports = app => {
         const value = $(
           '#shoppingCart > div.card-body > div.mt-fare-card-summary > div > strong:nth-child(5)'
         );
-        return value.nextSibling.textContent.replace('$', '').text();
+        return value[0].nextSibling.nodeValue.replace('$', '');
       };
 
       const balanceString = await getHTML(url);

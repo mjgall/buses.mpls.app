@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 //SERVER RUNNING
-const port = process.env.PORT || 2000;
+const port = process.env.PORT || 2020;
 app.listen(port, () => {
   console.log(`Running on http://localhost:${port}`);
 });
