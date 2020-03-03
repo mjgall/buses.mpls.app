@@ -29,22 +29,15 @@ module.exports = app => {
     })();
   });
 
-  app.get('/api/stopId', (req, res) => {
+  app.get('/api/stopId', async (req, res) => {
     (async () => {
       const stop = req.query.stop;
 
-      const url = `https://www.metrotransit.org/NexTripBadge.aspx?stopnumber=${stop}`;
+      const response = await axios.get(`https://svc.metrotransit.org/nextripv2/${stop}`)
 
-      const getHTML = async url => {
-        const axiosResponse = await axios.get(url);
-        const html = axiosResponse.data;
-        const $ = cheerio.load(html);
-        const value = $('#NexTripControl1_NexTripResults1_lblLocation');
-        return value.text();
-      };
+      const stopDescription = response.data.Stop.Description
 
-      const result = await getHTML(url);
-      res.send({ location: result });
+      res.send({ location: stopDescription });
     })();
   });
 };

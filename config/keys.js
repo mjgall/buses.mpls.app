@@ -1,7 +1,5 @@
-module.exports = {
-  mongoURI: process.env.DB_URI,
-  googleClientId:
-  process.env.GOOGLE_CLIENT_ID,
-  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  cookieKey: process.env.COOKIE_KEY
-};
+if (process.env.ENV === 'production') {
+  module.exports = module.require('./keys-prod');
+} else {
+  module.exports = module.require('./keys-dev');
+}

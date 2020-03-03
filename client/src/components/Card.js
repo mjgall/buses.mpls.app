@@ -31,11 +31,12 @@ class BusCard extends React.Component {
 
   fetchBuses = async id => {
     const response = await fetch(
-      `https://svc.metrotransit.org/NexTrip/${id}?format=json`
+      `https://svc.metrotransit.org/nextripv2/${id}?format=json`
     );
     const data = await response.json();
+    console.log(data)
     if (this._isMounted) {
-      this.setState({ isLoading: false, buses: data.slice(0, 6) });
+      this.setState({ isLoading: false, buses: data.Departures.slice(0, 6) });
     }
     
   };
@@ -74,7 +75,7 @@ class BusCard extends React.Component {
             <ul>
               {this.state.buses.map((bus, index) => (
                 <li className={bus.Actual.toString()} key={index}>
-                  {bus.Route}
+                  {bus.RouteId}
                   {bus.Terminal} -- {bus.DepartureText}
                 </li>
               ))}
