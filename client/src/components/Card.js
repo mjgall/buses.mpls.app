@@ -34,13 +34,12 @@ class BusCard extends React.Component {
       `https://svc.metrotransit.org/nextripv2/${id}?format=json`
     );
     const data = await response.json();
+    console.log(data)
     if (this._isMounted) {
       this.setState({
         buses: data.Departures.slice(0, 6),
         location: data.Stop.Description,
         stopId: data.Stop.StopId,
-        direction:
-          data.Departures[0].DirectionId === 1 ? 'Southbound' : 'Northbound',
         isLoading: false
       });
     }
@@ -66,38 +65,44 @@ class BusCard extends React.Component {
   render() {
     console.log(this.props);
     return (
-      <div className="card" data-key={this.props.inArray}>
+      <div className="card" data-key={ this.props.inArray }>
         <div className="content">
           <Icon
             name="window close outline"
-            style={{ float: 'right', color: 'red' }}
-            onClick={this.removeCard}
+            style={ { float: 'right', color: 'red' } }
+            onClick={ this.removeCard }
             id="close-card"
           />
-          <div className="header">{this.state.location}</div>
+          <div className="header">{ this.state.location }</div>
 
           <div className="meta">
-            {this.state.stopId} - {this.state.direction}
+            { this.state.stopId }
           </div>
           <div className="description">
             <ul>
-              {this.state.buses.map((bus, index) => (
-                <li className={bus.Actual.toString()} key={index}>
-                  {bus.RouteId}
-                  {bus.Terminal} -- {bus.DepartureText}
+              { this.state.buses.map((bus, index) => (
+                <li className={ bus.Actual.toString() } key={ index }>
+                  { bus.RouteId }
+                  { bus.Terminal } -- { bus.DepartureText } <div style={ { color: 'lightgray', display: 'inline'}}>({ bus.DirectionId === 1
+                    ? 'S'
+                    : bus.DirectionId === 2
+                      ? 'E'
+                      : bus.DirectionId === 3
+                        ? 'W'
+                        : 'N' })</div>
                 </li>
-              ))}
+              )) }
             </ul>
           </div>
           <div className="footer">
-            {this.props.auth ? (
+            { this.props.auth ? (
               <div id="logged-in-actions">
                 <Popup
                   trigger={
                     <Icon
                       name="plus square outline"
-                      style={{ float: 'right', color: 'green' }}
-                      onClick={this.sendNewStop}
+                      style={ { float: 'right', color: 'green' } }
+                      onClick={ this.sendNewStop }
                       id="save-stop"
                     />
                   }
@@ -109,8 +114,8 @@ class BusCard extends React.Component {
                   trigger={
                     <Icon
                       name="minus square outline"
-                      style={{ float: 'right', color: 'gold' }}
-                      onClick={this.removeStop}
+                      style={ { float: 'right', color: 'gold' } }
+                      onClick={ this.removeStop }
                       id="save-stop"
                     />
                   }
@@ -119,7 +124,7 @@ class BusCard extends React.Component {
                   position="left center"
                 />
               </div>
-            ) : null}
+            ) : null }
           </div>
         </div>
       </div>
