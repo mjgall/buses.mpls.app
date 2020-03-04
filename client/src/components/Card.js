@@ -7,11 +7,11 @@ import * as actions from '../actions/index';
 class BusCard extends React.Component {
   state = {
     buses: [],
-    isLoading: true
+    isLoading: true,
+    location: null
   };
 
   _isMounted = false;
-
 
   sendNewStop = async () => {
     await axios.put('/api/stops/add', {
@@ -34,11 +34,16 @@ class BusCard extends React.Component {
       `https://svc.metrotransit.org/nextripv2/${id}?format=json`
     );
     const data = await response.json();
-    console.log(data)
     if (this._isMounted) {
-      this.setState({ isLoading: false, buses: data.Departures.slice(0, 6) });
+      this.setState({
+        buses: data.Departures.slice(0, 6),
+        location: data.Stop.Description,
+        stopId: data.Stop.StopId,
+        direction:
+          data.Departures[0].DirectionId === 1 ? 'Southbound' : 'Northbound',
+        isLoading: false
+      });
     }
-    
   };
 
   removeCard = () => {
@@ -59,6 +64,7 @@ class BusCard extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className="card" data-key={this.props.inArray}>
         <div className="content">
@@ -68,9 +74,11 @@ class BusCard extends React.Component {
             onClick={this.removeCard}
             id="close-card"
           />
-          <div className="header">{this.props.location}</div>
+          <div className="header">{this.state.location}</div>
 
-          <div className="meta">{this.props.stopId}</div>
+          <div className="meta">
+            {this.state.stopId} - {this.state.direction}
+          </div>
           <div className="description">
             <ul>
               {this.state.buses.map((bus, index) => (
@@ -123,7 +131,4 @@ const mapStateToProps = state => {
   return { auth: state.auth };
 };
 
-export default connect(
-  mapStateToProps,
-  actions
-)(BusCard);
+export default connect(mapStateToProps, actions)(BusCard);
