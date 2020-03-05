@@ -67,12 +67,12 @@ class BusCard extends React.Component {
     return (
       <div className="card" data-key={ this.props.inArray }>
         <div className="content">
-          <Icon
+          { this.props.type === 'by-route' ? null : <Icon
             name="window close outline"
             style={ { float: 'right', color: 'red' } }
             onClick={ this.removeCard }
             id="close-card"
-          />
+          /> }
           <div className="header">{ this.state.location }</div>
 
           <div className="meta">
@@ -83,7 +83,7 @@ class BusCard extends React.Component {
               { this.state.buses.map((bus, index) => (
                 <li className={ bus.Actual.toString() } key={ index }>
                   { bus.RouteId }
-                  { bus.Terminal } -- { bus.DepartureText } <div style={ { color: 'lightgray', display: 'inline'}}>({ bus.DirectionId === 1
+                  { bus.Terminal } -- { bus.DepartureText } <div style={ { color: 'lightgray', display: 'inline' } }>({ bus.DirectionId === 1
                     ? 'S'
                     : bus.DirectionId === 2
                       ? 'E'

@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Dropdown } from 'semantic-ui-react';
-import BusCard from '../components/Card'
+import BusCard from '../components/Card';
+import Quote from '../components/Quote'
 
 class RoutePage extends React.Component {
   state = {
@@ -25,33 +26,52 @@ class RoutePage extends React.Component {
     this.setState({ routes, isLoaded: true, directionsLoaded: false });
   };
 
-  handleRouteSelection = async e => {
-    const index = e.target.getAttribute('index');
+  handleRouteSelection = async (e, hello) => {
+    console.log(hello)
+    let index;
+    if (e.target.localName === 'span') {
+      index = e.target.parentNode.getAttribute('index');
+    } else {
+      index = e.target.getAttribute('index');
+    }
     const selectedRoute = await this.state.routes[index];
-    await this.getRouteDirections(selectedRoute.RouteId);
+    this.getRouteDirections(selectedRoute.RouteId);
     this.setState({ selectedRoute });
   };
 
   handleDirectionSelection = async e => {
-    const index = e.target.getAttribute('index');
+    let index;
+    if (e.target.localName === 'span') {
+      index = e.target.parentNode.getAttribute('index');
+    } else {
+      index = e.target.getAttribute('index');
+    }
     const selectedDirection = await this.state.directions[index].DirectionId;
     this.getStops(this.state.selectedRoute.RouteId, selectedDirection);
-    this.setState({ selectedDirection })
+    this.setState({ selectedDirection });
   };
 
   handleStopSelection = async e => {
-    const index = e.target.getAttribute('index');
-    const stopCode = this.state.stops[index].PlaceCode
-    const selectedStop = (await axios.get(`https://svc.metrotransit.org/nextripv2/${this.state.selectedRoute.RouteId}/${this.state.selectedDirection}/${stopCode}`)).data
-    this.setState({ selectedStop, stopLoaded: true })
-  }
+    let index;
+    if (e.target.localName === 'span') {
+      index = e.target.parentNode.getAttribute('index');
+    } else {
+      index = e.target.getAttribute('index');
+    }
+    const stopCode = this.state.stops[index].PlaceCode;
+    const selectedStop = (
+      await axios.get(
+        `https://svc.metrotransit.org/nextripv2/${this.state.selectedRoute.RouteId}/${this.state.selectedDirection}/${stopCode}`
+      )
+    ).data;
+    this.setState({ selectedStop, stopLoaded: true });
+  };
 
   getRouteDirections = async routeId => {
     const response = await axios.get(
       `https://svc.metrotransit.org/nextripv2/directions/${routeId}`
     );
     const directions = response.data;
-    console.log(directions);
     this.setState({ directions, directionsLoaded: true });
   };
 
@@ -60,7 +80,6 @@ class RoutePage extends React.Component {
       `https://svc.metrotransit.org/nextripv2/stops/${routeId}/${routeDirection}`
     );
     const stops = response.data;
-    console.log(stops);
     this.setState({ stops, stopsLoaded: true });
   };
 
@@ -69,54 +88,72 @@ class RoutePage extends React.Component {
       return (
         <>
           <div>
-            <h1>Get times by route</h1>
+            <h1>Times by route</h1>
+            <Quote />
             <Dropdown
-              onChange={ this.handleRouteSelection }
+              selectOnNavigation={false}
+              search
+              className="route-dropdown"
+              onChange={this.handleRouteSelection}
               placeholder="Select Route"
               fluid
               selection
-              options={ this.state.routes.map((route, index) => {
+              options={this.state.routes.map((route, index) => {
                 return {
                   key: route.RouteId,
                   text: route.Description,
-                  value: route.RouteId,
+                  value: index,
                   index
                 };
-              }) }
+              })}
             />
-            { this.state.directions.length > 0 && this.state.directionsLoaded ? (
+            {this.state.directions.length > 0 && this.state.directionsLoaded ? (
               <Dropdown
-                onChange={ this.handleDirectionSelection }
+              selectOnNavigation={false}
+                search
+                className="route-dropdown"
+                onChange={this.handleDirectionSelection}
                 placeholder="Select Direction"
                 fluid
                 selection
-                options={ this.state.directions.map((direction, index) => {
+                options={this.state.directions.map((direction, index) => {
                   return {
                     key: index,
                     text: direction.DirectionName,
                     value: direction.DirectionName,
                     index
                   };
-                }) }
+                })}
               />
-            ) : null }
-            { this.state.stops.length > 0 && this.state.stopsLoaded ? (
+            ) : null}
+            {this.state.stops.length > 0 && this.state.stopsLoaded ? (
               <Dropdown
-                onChange={ this.handleStopSelection }
+              selectOnNavigation={false}
+                search
+                className="route-dropdown"
+                onChange={this.handleStopSelection}
                 placeholder="Select Stop"
                 fluid
                 selection
-                options={ this.state.stops.map((stop, index) => {
+                options={this.state.stops.map((stop, index) => {
                   return {
                     key: stop.PlaceCode,
                     text: stop.Description,
                     value: stop.Description,
                     index
                   };
-                }) }
+                })}
               />
-            ) : null }
-            { this.state.selectedStop ? <BusCard stopId={ this.state.selectedStop.Stop.StopId }></BusCard> : null }
+            ) : null}
+            {this.state.selectedStop ? (
+              <div className="ui vertical segment">
+                <div id="" className="ui centered cards">
+                  <BusCard
+                    stopId={this.state.selectedStop.Stop.StopId}
+                    type="by-route"></BusCard>
+                </div>
+              </div>
+            ) : null}
           </div>
         </>
       );

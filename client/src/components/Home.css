@@ -26,3 +26,11 @@
   width: 100%;
   right: 1em;
 }
+
+.route-dropdown {
+  margin: 1.5rem 0;
+}
+
+.ui.selection.dropdown.route-dropdown .menu {
+  max-height: 45vh;
+}
