@@ -35,10 +35,7 @@ class Menu extends React.Component {
           <Link to="/" className="item">
             <div className="header">MPLS Buses</div>
           </Link>
-          <div className="menu right">
-{this.renderAuthItems()}
-          </div>
-          
+          <div className="menu right">{this.renderAuthItems()}</div>
         </div>
       </div>
     );
@@ -53,7 +50,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(Menu);
+export default connect(mapStateToProps, null)(Menu);

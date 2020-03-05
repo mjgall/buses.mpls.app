@@ -22,7 +22,7 @@ class App extends React.Component {
     return (
       <div className="ui main container">
         <Router history={ history }>
-          <Menu />
+          <Menu fixed/>
           <Switch>
             <Route component={ RoutePage } path="/route" exact />
             <Route component={ Home } path="/" exact />
