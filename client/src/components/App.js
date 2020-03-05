@@ -7,6 +7,7 @@ import Menu from './Menu';
 import history from '../history';
 import * as actions from '../actions/index';
 import Settings from './Settings';
+import RoutePage from './RoutePage'
 
 class App extends React.Component {
   componentWillMount() {
@@ -20,11 +21,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="ui main container">
-        <Router history={history}>
+        <Router history={ history }>
           <Menu />
           <Switch>
-            <Route component={Home} path="/" exact />
-            <Route component={Settings} path="/settings" exact />
+            <Route component={ RoutePage } path="/route" exact />
+            <Route component={ Home } path="/" exact />
           </Switch>
         </Router>
       </div>
