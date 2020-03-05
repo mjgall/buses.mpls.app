@@ -27,24 +27,30 @@ const main = async searchTerm => {
   });
 
   if (matchedItems.length > 0) {
-    //send email using Zapier
+    //send email using Zapier/Gmail
 
-    let lis = ''
+    let lis = '';
 
     matchedItems.forEach(item => {
-      lis = lis + `<li><a href=${item.link}>${item.title}</a></li>`
-    })
+      lis = lis + `<li><a href=${item.link}>${item.title}</a></li>`;
+    });
 
-    const html = `<p>We found the following items today:</p><ul>${lis}</ul>`
+    const html = `<p>Found the following new items today that match your search of '${searchTerm}':</p><ul>${lis}</ul><p>Thanks!</p><p>Mike</p>`;
 
-    console.log(html)
+    axios.post('https://hooks.zapier.com/hooks/catch/2471883/omj12pl/', {
+      html
+    });
 
-    axios.post('https://hookb.in/8PLPmpO9BVC86RgkG2g9', {html})
+    return html;
+  } else {
+    const html = `<p>Sorry, nothing new today matching '${searchTerm}'</p><p>Thanks!</p><p>Mike</p>`;
 
-    return html
+    axios.post('https://hooks.zapier.com/hooks/catch/2471883/omj12pl/', {
+      html
+    });
 
+    return html;
   }
-
 };
 
 main('Fender');
