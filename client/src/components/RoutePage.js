@@ -110,7 +110,6 @@ class RoutePage extends React.Component {
             {this.state.directions.length > 0 && this.state.directionsLoaded ? (
               <Dropdown
               selectOnNavigation={false}
-                search
                 className="route-dropdown"
                 onChange={this.handleDirectionSelection}
                 placeholder="Select Direction"
