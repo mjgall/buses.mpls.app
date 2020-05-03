@@ -2,32 +2,30 @@ const cheerio = require('cheerio');
 const axios = require('axios');
 
 module.exports = (app) => {
-  app.get('/api/card', (req, res) => {
-    (async () => {
+  app.get('/api/card', async (req, res) => {
+    try {
       const serial = req.query.serial;
 
-      const url = `https://store.metrotransit.org/FareCardTransactionHistory.aspx?farecard=${serial}`;
-
-      const getHTML = async (url) => {
+      const getBalance = async (serial) => {
+        const url = `https://store.metrotransit.org/FareCardTransactionHistory.aspx?farecard=${serial}`;
         const axiosResponse = await axios.get(url);
         const html = axiosResponse.data;
         const $ = cheerio.load(html);
         const value = $('#CurrentStoredValue');
+        //returns the string found in the DOM
         return value[0].children[0].data.replace('$', '');
       };
 
-      const balanceString = await getHTML(url);
+      const balance = parseFloat(await getBalance(serial)).toFixed(2);
 
-      console.log(balanceString);
-
-      const balanceNumber = parseFloat(balanceString).toFixed(2);
-
-      if (balanceNumber === NaN) {
+      if (balance === NaN) {
         res.send({ amount: 'No results' });
       } else {
-        res.send({ amount: balanceNumber });
+        res.send({ amount: balance });
       }
-    })();
+    } catch (error) {
+      res.send({ error: true, error });
+    }
   });
 
   app.get('/api/stopId', async (req, res) => {
