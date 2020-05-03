@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 
 module.exports = app => {
+  
   app.get(
     '/auth/google',
     passport.authenticate('google', {
@@ -46,7 +47,11 @@ module.exports = app => {
   app.put('/api/stops/remove', (req, res) => {
     User.findOneAndUpdate(
       { googleId: req.user.googleId },
-      { $pullAll: { stops:  [{id: req.body.stop, location: req.body.location}] } },
+      {
+        $pullAll: {
+          stops: [{ id: req.body.stop, location: req.body.location }]
+        }
+      },
       { new: true },
       (err, doc) => {
         if (err) {

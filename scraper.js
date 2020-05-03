@@ -3,7 +3,7 @@ const axios = require('axios');
 const _ = require('lodash');
 
 const main = async searchTerm => {
-  const url = 'https://minneapolis.craigslist.org/search/msa?postedToday=1';
+  const url = 'https://minneapolis.craigslist.org/search/cta?postedToday=1';
   const response = await axios.get(url);
   const html = response.data;
 
@@ -27,7 +27,7 @@ const main = async searchTerm => {
   });
 
   if (matchedItems.length > 0) {
-    //send email using Zapier/Gmail
+    //send html to Zapier
 
     let lis = '';
 
@@ -53,4 +53,4 @@ const main = async searchTerm => {
   }
 };
 
-main('Fender');
+main('bmw');
