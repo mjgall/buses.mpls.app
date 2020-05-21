@@ -8,7 +8,7 @@ class BusCard extends React.Component {
   state = {
     buses: [],
     isLoading: true,
-    location: null
+    location: null,
   };
 
   _isMounted = false;
@@ -16,32 +16,36 @@ class BusCard extends React.Component {
   sendNewStop = async () => {
     await axios.put('/api/stops/add', {
       stop: this.props.stopId,
-      location: this.props.location
+      location: this.props.location,
     });
   };
 
   removeStop = async () => {
     await axios.put('/api/stops/remove', {
       stop: this.props.stopId,
-      location: this.props.location
+      location: this.props.location,
     });
 
     this.removeCard();
   };
 
-  fetchBuses = async id => {
-    const response = await fetch(
-      `https://svc.metrotransit.org/nextripv2/${id}?format=json`
-    );
-    const data = await response.json();
-    console.log(data)
-    if (this._isMounted) {
-      this.setState({
-        buses: data.Departures.slice(0, 6),
-        location: data.Stop.Description,
-        stopId: data.Stop.StopId,
-        isLoading: false
-      });
+  fetchBuses = async (id) => {
+    try {
+      const response = await fetch(
+        `https://svc.metrotransit.org/nextripv2/${id}?format=json`
+      );
+      const data = await response.json();
+      console.log(data);
+      if (this._isMounted) {
+        this.setState({
+          buses: data.Departures.slice(0, 6),
+          location: data.Stop.Description,
+          stopId: data.Stop.StopId,
+          isLoading: false,
+        });
+      }
+    } catch (error) {
+      this.props.handleError();
     }
   };
 
@@ -65,44 +69,49 @@ class BusCard extends React.Component {
   render() {
     console.log(this.props);
     return (
-      <div className="card" data-key={ this.props.inArray }>
+      <div className="card" data-key={this.props.inArray}>
         <div className="content">
-          { this.props.type === 'by-route' ? null : <Icon
-            name="window close outline"
-            style={ { float: 'right', color: 'red' } }
-            onClick={ this.removeCard }
-            id="close-card"
-          /> }
-          <div className="header">{ this.state.location }</div>
+          {this.props.type === 'by-route' ? null : (
+            <Icon
+              name="window close outline"
+              style={{ float: 'right', color: 'red' }}
+              onClick={this.removeCard}
+              id="close-card"
+            />
+          )}
+          <div className="header">{this.state.location}</div>
 
-          <div className="meta">
-            { this.state.stopId }
-          </div>
+          <div className="meta">{this.state.stopId}</div>
           <div className="description">
             <ul>
-              { this.state.buses.map((bus, index) => (
-                <li className={ bus.Actual.toString() } key={ index }>
-                  { bus.RouteId }
-                  { bus.Terminal } -- { bus.DepartureText } <div style={ { color: 'lightgray', display: 'inline' } }>({ bus.DirectionId === 1
-                    ? 'S'
-                    : bus.DirectionId === 2
+              {this.state.buses.map((bus, index) => (
+                <li className={bus.Actual.toString()} key={index}>
+                  {bus.RouteId}
+                  {bus.Terminal} -- {bus.DepartureText}{' '}
+                  <div style={{ color: 'lightgray', display: 'inline' }}>
+                    (
+                    {bus.DirectionId === 1
+                      ? 'S'
+                      : bus.DirectionId === 2
                       ? 'E'
                       : bus.DirectionId === 3
-                        ? 'W'
-                        : 'N' })</div>
+                      ? 'W'
+                      : 'N'}
+                    )
+                  </div>
                 </li>
-              )) }
+              ))}
             </ul>
           </div>
           <div className="footer">
-            { this.props.auth ? (
+            {this.props.auth ? (
               <div id="logged-in-actions">
                 <Popup
                   trigger={
                     <Icon
                       name="plus square outline"
-                      style={ { float: 'right', color: 'green' } }
-                      onClick={ this.sendNewStop }
+                      style={{ float: 'right', color: 'green' }}
+                      onClick={this.sendNewStop}
                       id="save-stop"
                     />
                   }
@@ -114,8 +123,8 @@ class BusCard extends React.Component {
                   trigger={
                     <Icon
                       name="minus square outline"
-                      style={ { float: 'right', color: 'gold' } }
-                      onClick={ this.removeStop }
+                      style={{ float: 'right', color: 'gold' }}
+                      onClick={this.removeStop}
                       id="save-stop"
                     />
                   }
@@ -124,7 +133,7 @@ class BusCard extends React.Component {
                   position="left center"
                 />
               </div>
-            ) : null }
+            ) : null}
           </div>
         </div>
       </div>
@@ -132,7 +141,7 @@ class BusCard extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { auth: state.auth };
 };
 
